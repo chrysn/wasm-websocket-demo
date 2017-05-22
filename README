@@ -1,0 +1,7 @@
+demo of rust interacting in the browser
+
+build with
+$ cargo build --target=wasm32-unknown-emscripten --release
+
+you will need to have emscripten (eg. emsdk-portable incoming as per
+http://asquera.de/blog/2017-04-10/the-path-to-rust-on-the-web/) installed.
