@@ -1,13 +1,8 @@
-demo of rust interacting in the browser
+Rust websocket demo in the browser
 
-build with
-$ cargo build --target=wasm32-unknown-emscripten --release
+build and run with
 
-you will need to have emscripten (eg. emsdk-portable incoming as per
-http://asquera.de/blog/2017-04-10/the-path-to-rust-on-the-web/) installed; with what's currently lying around at ~/emsdk-portable/, that can be enabled in a shell with
-
-# remember to use cargo's path as well
-export PATH=/home/chrysn/.cargo/bin:/home/chrysn/emsdk-portable:/home/chrysn/emsdk-portable/clang/fastcomp/build_incoming_64/bin:/home/chrysn/emsdk-portable/node/4.1.1_64bit/bin:/home/chrysn/emsdk-portable/emscripten/incoming:$PATH
-export EMSDK=/home/chrysn/emsdk-portable
-export EMSCRIPTEN=/home/chrysn/emsdk-portable/emscripten/incoming
-export EM_CONFIG=$PWD/.emscripten
+$ cargo build --target=wasm32-unknown-emscripten
+$ ln -sf target/wasm32-unknown-emscripten/debug/deps/wasm_websocket_demo-????????????????.js site.js
+$ ln -sf target/wasm32-unknown-emscripten/debug/deps/wasm_websocket_demo-????????????????.wasm site.wasm
+$ python3 -m http.server 9001
