@@ -31,18 +31,31 @@ fn main() {
     let document = webplatform::init();
     let body = document.element_query("body").unwrap();
     println!("There is a body: {:?}", body);
-    let hr = document.element_create("hr").unwrap();
-    hr.on("click", move |_| {
-        println!("hr was clicked");
+    let h1 = document.element_create("h1").unwrap();
+    h1.html_set("Hello from Rust, click me!");
+    h1.on("click", move |_| {
+        println!("h1 was clicked");
 
         let ls = webplatform::LocalStorageInterface {};
         let old = ls.get("counter");
         let new = match old { None => "0".to_owned(), Some(x) => x + "." };
         println!("counter is {:?}", new);
         ls.set("counter", &new);
+
+
+        let s = document.websocket_create("wss://echo.websocket.org/").unwrap();
+        let s = std::rc::Rc::new(s);
+        s.addEventListener_message_string(|message| { println!("Message string: {:?}", message); });
+        s.addEventListener_message_binary(|message| { println!("Message binary: {:?}", message); });
+        let s_for_callback = s.clone(); // with lexical scoping, we could (almost ;-) avoid all that, but this is a simple example anyway
+        s.addEventListener_open(move || {
+            println!("Connected");
+            s_for_callback.send("Hello World");
+            let some_data = [10, 20, 30, 40, 200, 0, 99];
+            s_for_callback.send_binary(&some_data);
+        });
     });
-    body.append(&hr);
-    body.html_append("<h1>Included from Rust</h1>");
+    body.append(&h1);
 
     // NEXT STEPS: https://github.com/rust-webplatform/rust-webplatform/issues/23
 
