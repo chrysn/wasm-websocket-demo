@@ -1,1 +1,0 @@
-target/wasm32-unknown-emscripten/release/deps/wasm_demo-59208cae53d78793.js
